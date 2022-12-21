@@ -1,0 +1,20 @@
+{
+    "ConnectionArn": "arn:aws:codestar-connections:us-east-1:963485456147:connection/339b282a-eac2-4262-bf01-ae4867e7184a",
+    "ResponseMetadata": {
+        "RequestId": "2fd12b1e-4568-48c8-bf29-12fb85767374",
+        "HTTPStatusCode": 200,
+        "HTTPHeaders": {
+            "date": "Tue, 20 Dec 2022 22:05:51 GMT",
+            "content-type": "application/x-amz-json-1.0",
+            "content-length": "119",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "2fd12b1e-4568-48c8-bf29-12fb85767374",
+            "x-xss-protection": "1; mode=block",
+            "strict-transport-security": "max-age=31536000; includeSubDomains",
+            "x-frame-options": "DENY",
+            "content-security-policy": "default-src 'self';",
+            "x-content-type-options": "nosniff"
+        },
+        "RetryAttempts": 0
+    }
+}
