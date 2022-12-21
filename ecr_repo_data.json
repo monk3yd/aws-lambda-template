@@ -1,0 +1,14 @@
+{
+    "repositoryArn": "arn:aws:ecr:us-east-1:963485456147:repository/lambda_template_container",
+    "registryId": "963485456147",
+    "repositoryName": "lambda_template_container",
+    "repositoryUri": "963485456147.dkr.ecr.us-east-1.amazonaws.com/lambda_template_container",
+    "createdAt": "12/20/2022, 15:23:55",
+    "imageTagMutability": "MUTABLE",
+    "imageScanningConfiguration": {
+        "scanOnPush": false
+    },
+    "encryptionConfiguration": {
+        "encryptionType": "AES256"
+    }
+}
