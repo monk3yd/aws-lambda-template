@@ -2,7 +2,7 @@ import json
 import requests
 
 
-def lambda_handler(event, context):
+def lambda_handler(event=dict(), context=dict()):
     # Cross Origin Resource Share (CORS) headers
     headers = {
         "Access-Control-Allow-Headers": "Content-Type",
@@ -11,7 +11,7 @@ def lambda_handler(event, context):
         "Content-Type": "application/json"
     }
 
-    body = json.loads(event["body"])
+    # body = json.loads(event["body"])
 
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
@@ -33,12 +33,12 @@ def lambda_handler(event, context):
 
 
 # --- Local ---
-payload = {
-    "key1": "value1",
-    "key2": "value2"
-}
-event = {
-    "body": json.dumps(payload)
-}
-lambda_response = lambda_handler(event=event)
-print(f"Lambda response {type(lambda_response)}: {lambda_response}")
+# payload = {
+#     "key1": "value1",
+#     "key2": "value2"
+# }
+# event = {
+#     "body": json.dumps(payload)
+# }
+# lambda_response = lambda_handler(event=event)
+# print(f"Lambda response {type(lambda_response)}: {lambda_response}")
