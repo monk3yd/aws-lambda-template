@@ -1,17 +1,19 @@
+# Choose the AWS region and pick a name for the ECR repository
+
 import boto3
 import json
 
 
 def main():
     # --- AWS ---
-    AWS_REGION_NAME = "us-east-1"
-    ECR_REPO_NAME = "lambda_template_container"
+    AWS_REGION = "us-east-1"
+    ECR_REPO = "lambda_template_container"
 
     # Create an ECR client
-    client = boto3.client("ecr", region_name=AWS_REGION_NAME)
+    client = boto3.client("ecr", region_name=AWS_REGION)
 
     # Create ECR repository
-    response = client.create_repository(repositoryName=ECR_REPO_NAME)
+    response = client.create_repository(repositoryName=ECR_REPO)
     repository = response["repository"]
 
     # Convert datetime into str
