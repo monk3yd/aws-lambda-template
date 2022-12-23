@@ -128,3 +128,30 @@ aws cloudformation delete-stack --stack-name aws-lambda-template
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+
+
+## Steps to follow for CICD setup:
+
+1. Create a new lambda project github repository by using [aws-lambda-template](https://github.com/monk3yd/aws-lambda-template)
+
+2. Clone new lambda project github repository into local machine
+```bash
+git clone git@github.com:monk3yd/github-to-lambda-demo.git
+```
+
+3. Create ECR for new lambda project using create_ecr.py script
+```bash
+python3 create_ecr.py
+```
+
+4. Define github actions secrets:
+  - AWS_ACCOUNT_ID
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_REGION
+
+5. Define image name (project name) & tag (latest or experimental) within .github/workflows/deploy.yaml 
+
+6. Create lambda function (project name) using AWS console and link it to ECR
+
+7. Push
