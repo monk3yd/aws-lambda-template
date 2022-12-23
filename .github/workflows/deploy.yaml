@@ -1,0 +1,58 @@
+name: Deploy code to lambda
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  # AWS
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+  # Project Name
+  IMAGE_NAME: github-to-lambda-demo
+
+  # Project Version
+  IMAGE_TAG: latest 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # runs-on: ubuntu-20.04
+
+    steps:
+      # Source github code
+    - uses: actions/checkout@v3
+
+      # AWS CLI
+    - name: Configure AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install awscli
+        aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+        aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+        aws configure set default.region ${AWS_REGION}
+
+      # Docker & ECR
+    - name: Build and push Docker image to ECR
+      run: |
+        # Login
+        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+        # Build docker image
+        docker build -t ${IMAGE_NAME} .
+        # Link docker image to ECR
+        docker tag ${IMAGE_NAME} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
+        # Push docker image to ECR
+        docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy ECR image to Lambda
+      run: |
+        aws lambda update-function-code --function-name ${IMAGE_NAME} --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG} 
