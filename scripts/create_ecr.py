@@ -7,7 +7,7 @@ import json
 def main():
     # --- AWS ---
     AWS_REGION = "us-east-1"
-    ECR_REPO = "lambda_template_container"
+    ECR_REPO = "lambda-template"  # Use project name
 
     # Create an ECR client
     client = boto3.client("ecr", region_name=AWS_REGION)
