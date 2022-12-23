@@ -152,6 +152,9 @@ python3 create_ecr.py
 
 5. Define image name (project name) & tag (latest or experimental) within .github/workflows/deploy.yaml 
 
-6. Create lambda function (project name) using AWS console and link it to ECR
+6. Push for build container and save into ECR (deploy to lambda will fail)
 
-7. Push
+7. Create lambda function (project name) using AWS console and link it to ECR
+
+8. Enjoy, anytime you push to main the lambda will update accordingly
+
