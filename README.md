@@ -52,16 +52,14 @@ python3 scripts/create_lambdas.py
 python3 scripts/create_iam_lambda_execution.py
 ```
 
-7. Define github actions variables within project repository:
- - PROJECT_NAME
-
-8. Define github actions secrets within project repository:
+7. Define github actions secrets within project repository:
   - AWS_ACCOUNT_ID
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
   - REGION_NAME
+  - PROJECT_NAME
 
-9. Push to main or experimental branches within github, the lambda function will update accordingly
+8. Push to main or experimental branches within github, the lambda function will update accordingly
 
 
 ## aws cli
