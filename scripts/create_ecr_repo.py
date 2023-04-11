@@ -3,17 +3,19 @@
 import boto3
 import json
 
+from loguru import logger
+
 
 def main():
     # --- AWS ---
-    AWS_REGION = "us-east-1"
-    ECR_REPO = "lambda-template"  # Use project name
+    REGION_NAME = "us-east-1"
+    ECR_NAME = "lambda-template"  # Use project name
 
     # Create an ECR client
-    client = boto3.client("ecr", region_name=AWS_REGION)
+    client = boto3.client("ecr", region_name=REGION_NAME)
 
     # Create ECR repository
-    response = client.create_repository(repositoryName=ECR_REPO)
+    response = client.create_repository(repositoryName=ECR_NAME)
     repository = response["repository"]
 
     # Convert datetime into str
