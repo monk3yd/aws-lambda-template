@@ -18,7 +18,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 # ecr : use docker image saved within ECR repository
 WORKFLOW: str = "ecr"
 
-LAMBDA_NAME = "lambda-template"
+LAMBDA_NAME = "github-to-lambda"  # Use project name
 # LAMBDA_RUNTIME = "python3.11"
 # LAMBDA_HANDLER = "handler.app"
 LAMBDA_TIMEOUT = 300  # 5min
@@ -59,36 +59,43 @@ def main():
         }
 
     if WORKFLOW == "ecr":
-        # when creating ecr with python scripts
-        # with open("scripts/data/ecr_repo.json", "r") as file:
-        #     uri = json.loads(file.read())["repositoryUri"]
+        branches = ["main", "experimental"]
+        for branch in branches:
+            # Main lambda
+            with open(f"scripts/data/ecr_repo_{branch}.txt", "r") as file:
+                uri = file.read().strip()
 
-        with open("scripts/data/ecr_repo.txt", "r") as file:
-            uri = file.read()
+            # use ECR docker image for building container for lambda function
+            workflow_config = {"Code": {"ImageUri": uri}, "PackageType": "Image"}
 
-        # use ECR docker image for building container for lambda function
-        workflow_config = {"Code": {"ImageUri": uri}, "PackageType": "Image"}
+            if branch == "main":
+                lambda_function = LAMBDA_NAME
+                filename = "lambda.json"
 
-    basic_config = {
-        "FunctionName": LAMBDA_NAME,
-        # "Runtime": LAMBDA_RUNTIME,
-        "Role": role["Role"]["Arn"],
-        # "Handler": LAMBDA_HANDLER,
-        "Timeout": LAMBDA_TIMEOUT,  # Maximum allowable timeout
-        # Set up Lambda function environment variables
-        # "Environment": {
-        #     "Variables": {"Name": "helloWorldLambda", "Environment": "prod"}
-        # },
-    }
+            if branch == "experimental":
+                lambda_function = f"{LAMBDA_NAME}-experimental"
+                filename = "lambda_experimental.json"
 
-    # Merge
-    lambda_configuration = basic_config | workflow_config
+            basic_config = {
+                "FunctionName": lambda_function,
+                # "Runtime": LAMBDA_RUNTIME,
+                "Role": role["Role"]["Arn"],
+                # "Handler": LAMBDA_HANDLER,
+                "Timeout": LAMBDA_TIMEOUT,  # Maximum allowable timeout
+                # Set up Lambda function environment variables
+                # "Environment": {
+                #     "Variables": {"Name": "helloWorldLambda", "Environment": "prod"}
+                # },
+            }
 
-    response = lambda_client.create_function(**lambda_configuration)
-    logger.info(f"Lambda creation response: {response}")
+            # Merge
+            lambda_configuration = basic_config | workflow_config
 
-    with open("scripts/data/lambda.json", "w") as file:
-        file.write(json.dumps(response))
+            response = lambda_client.create_function(**lambda_configuration)
+            logger.info(f"Lambda creation response: {response}")
+
+            with open(f"scripts/data/{filename}", "w") as file:
+                file.write(json.dumps(response))
 
 
 if __name__ == "__main__":
