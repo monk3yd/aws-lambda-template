@@ -1,5 +1,59 @@
 # aws-lambda-template
 
+## Steps to follow for CICD setup:
+
+1. Create a new lambda project github repository by using [aws-lambda-template](https://github.com/monk3yd/aws-lambda-template)
+
+2. Clone new lambda project github repository into local machine
+```bash
+git clone git@github.com:monk3yd/github-to-lambda-demo.git
+```
+
+3. Setup virtual environment : last supported python version for lambda is python3.9, for newer versions we need to create custom runtime.
+```bash
+pip3 install virtualenv
+
+# This will create a new directory called myenv in your current directory, which contains a new Python environment.
+virtualenv myenv
+
+# create venv dir with specific version of Python taken from conda
+virtualenv -p ~/anaconda3/bin/python3.9 venv
+
+# This will activate the virtual environment and change your shell's prompt to indicate that you're using the new environment.
+source myenv/bin/activate 
+```
+
+4. Create ECR for new lambda project
+```bash
+bash scripts/create-ecr-repo.sh
+```
+or
+```bash
+python3 scripts/create_ecr_repo.py
+```
+
+5. Define github actions secrets:
+  - AWS_ACCOUNT_ID
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_REGION
+
+6. Define image name (project name) & tag (main or experimental) within .github/workflows/deploy.yaml 
+
+7. Create lambda function and link it to respective ECR 
+```bash
+
+```
+
+
+6. Push for build container and save into ECR (deploy to lambda will fail)
+
+7. Create lambda function (project name) using AWS console and link it to ECR
+
+8. Enjoy, anytime you push to main the lambda will update accordingly
+
+
+## aws cli
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
 - handler - Code for the application's Lambda function.
@@ -129,32 +183,4 @@ See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-applica
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
 
-
-## Steps to follow for CICD setup:
-
-1. Create a new lambda project github repository by using [aws-lambda-template](https://github.com/monk3yd/aws-lambda-template)
-
-2. Clone new lambda project github repository into local machine
-```bash
-git clone git@github.com:monk3yd/github-to-lambda-demo.git
-```
-
-3. Create ECR for new lambda project using create_ecr.py script
-```bash
-python3 create_ecr.py
-```
-
-4. Define github actions secrets:
-  - AWS_ACCOUNT_ID
-  - AWS_ACCESS_KEY_ID
-  - AWS_SECRET_ACCESS_KEY
-  - AWS_REGION
-
-5. Define image name (project name) & tag (latest or experimental) within .github/workflows/deploy.yaml 
-
-6. Push for build container and save into ECR (deploy to lambda will fail)
-
-7. Create lambda function (project name) using AWS console and link it to ECR
-
-8. Enjoy, anytime you push to main the lambda will update accordingly
 
