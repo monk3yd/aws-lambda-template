@@ -3,9 +3,9 @@
 ### Deploy docker image to AWS ECR repository.
 
 # Variables
-ACCOUNT_ID="134284459147"
-REGION_NAME="us-east-1"
-IMAGE_NAME="github-to-lambda"  # Use project name
+ACCOUNT_ID=${AWS_ACCOUNT_ID}
+REGION_NAME=${AWS_REGION_NAME}
+ECR_NAME=${PROJECT_NAME}
 
 ## Main image
 IMAGE_TAG="main"

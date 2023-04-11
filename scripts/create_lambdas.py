@@ -11,6 +11,8 @@ from loguru import logger
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+REGION_NAME = os.getenv("AWS_REGION_NAME")
+PROJECT_NAME = os.getenv("PROJECT_NAME")
 
 # Determines the source from where the lambda function will take its code and dependencies
 # local : uploads source zip file from local system when creating lambda
@@ -18,7 +20,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 # ecr : use docker image saved within ECR repository
 WORKFLOW: str = "ecr"
 
-LAMBDA_NAME = "github-to-lambda"  # Use project name
+LAMBDA_NAME = PROJECT_NAME
 LAMBDA_RUNTIME = "python3.11"
 LAMBDA_HANDLER = "handler.app"
 LAMBDA_TIMEOUT = 300  # 5min
@@ -31,7 +33,7 @@ def main():
     session = boto3.Session(
         aws_access_key_id=AWS_ACCESS_KEY_ID,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        region_name="us-east-1",
+        region_name=REGION_NAME,
     )
 
     iam_client = session.client("iam")

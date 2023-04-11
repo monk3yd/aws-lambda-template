@@ -14,7 +14,7 @@ env:
   REGION_NAME: ${{ secrets.REGION_NAME }}
 
   # Project Name
-  IMAGE_NAME: github-to-lambda
+  IMAGE_NAME: ${{ env.PROJECT_NAME }}
 
 jobs:
   build:

@@ -3,9 +3,9 @@
 ### Create ECR repository in AWS.
 
 # Variables
-ACCOUNT_ID="134284459147"
-REGION_NAME="us-east-1"
-ECR_NAME="github-to-lambda"  # Use project name
+ACCOUNT_ID=${AWS_ACCOUNT_ID}
+REGION_NAME=${AWS_REGION_NAME}
+ECR_NAME=${PROJECT_NAME}
 
 # Login
 aws ecr get-login-password --region ${REGION_NAME} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION_NAME}.amazonaws.com
