@@ -4,12 +4,12 @@
 
 1. Create a new lambda project github repository by using [aws-lambda-template](https://github.com/monk3yd/aws-lambda-template)
 
-2. Clone new lambda project github repository into local machine
+2. Clone new lambda project github repository into local machine (project name example: github-to-lambda)
 ```bash
-git clone git@github.com:monk3yd/github-to-lambda-demo.git
+git clone git@github.com:monk3yd/github-to-lambda.git
 ```
 
-3. Setup virtual environment : last supported python version for lambda is python3.9, for newer versions we need to create custom runtime.
+3. Setup virtual environment : last supported python version for lambda is python3.9, for newer versions we need to add custom runtime when creating docker image.
 ```bash
 pip3 install virtualenv
 
@@ -21,36 +21,43 @@ virtualenv -p ~/anaconda3/bin/python3.9 venv
 
 # This will activate the virtual environment and change your shell's prompt to indicate that you're using the new environment.
 source myenv/bin/activate 
+
+# Install dependencies
+pip3 install -r requirements.txt
+
 ```
 
-4. Create ECR for new lambda project
+4. Create ECR for new lambda project (note : update script variables according to project)
 ```bash
 bash scripts/create-ecr-repo.sh
 ```
-or
+
+5. Deploy init docker images (main/experimental) to ECR (note : update script variables according to project)
 ```bash
-python3 scripts/create_ecr_repo.py
+bash scripts/deploy-images-to-ecr.sh
 ```
 
-5. Define github actions secrets:
+6. Create lambda functions (main/experimental) and link them to respective image within ECR. (note : update lambda name variable according to project)
+```bash
+python3 scripts/create_lambdas.py
+```
+
+* NOTE: if the AWS account is new we need to first run:
+```bash
+python3 scripts/create_iam_lambda_execution.py
+```
+
+7. Define github actions secrets within project repository:
   - AWS_ACCOUNT_ID
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
-  - AWS_REGION
+  - REGION_NAME
 
-6. Define image name (project name) & tag (main or experimental) within .github/workflows/deploy.yaml 
+8. Define image name (project name) within .github/workflows/deploy.yaml 
 
-7. Create lambda function and link it to respective ECR 
-```bash
+9. Push for auto build and deploy
 
-```
-
-
-6. Push for build container and save into ECR (deploy to lambda will fail)
-
-7. Create lambda function (project name) using AWS console and link it to ECR
-
-8. Enjoy, anytime you push to main the lambda will update accordingly
+10. Enjoy, anytime you push to main or experimental branches within github the lambda function will update accordingly
 
 
 ## aws cli
