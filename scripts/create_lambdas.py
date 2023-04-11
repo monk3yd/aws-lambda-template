@@ -14,13 +14,13 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
 # Determines the source from where the lambda function will take its code and dependencies
 # local : uploads source zip file from local system when creating lambda
-# s3 : use prestored source zip file within S3  # test 200OK
+# s3 : use prestored source zip file within S3
 # ecr : use docker image saved within ECR repository
 WORKFLOW: str = "ecr"
 
 LAMBDA_NAME = "github-to-lambda"  # Use project name
-# LAMBDA_RUNTIME = "python3.11"
-# LAMBDA_HANDLER = "handler.app"
+LAMBDA_RUNTIME = "python3.11"
+LAMBDA_HANDLER = "handler.app"
 LAMBDA_TIMEOUT = 300  # 5min
 
 
@@ -58,6 +58,18 @@ def main():
             "PackageType": "Zip",
         }
 
+        basic_config = {
+            "FunctionName": LAMBDA_NAME,
+            "Runtime": LAMBDA_RUNTIME,
+            "Role": role["Role"]["Arn"],
+            "Handler": LAMBDA_HANDLER,
+            "Timeout": LAMBDA_TIMEOUT,  # Maximum allowable timeout
+            # Set up Lambda function environment variables
+            # "Environment": {
+            #     "Variables": {"Name": "helloWorldLambda", "Environment": "prod"}
+            # },
+        }
+
     if WORKFLOW == "ecr":
         branches = ["main", "experimental"]
         for branch in branches:
@@ -78,9 +90,7 @@ def main():
 
             basic_config = {
                 "FunctionName": lambda_function,
-                # "Runtime": LAMBDA_RUNTIME,
                 "Role": role["Role"]["Arn"],
-                # "Handler": LAMBDA_HANDLER,
                 "Timeout": LAMBDA_TIMEOUT,  # Maximum allowable timeout
                 # Set up Lambda function environment variables
                 # "Environment": {
