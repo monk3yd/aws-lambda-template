@@ -24,7 +24,7 @@ def main():
     print(repository)
 
     # Save repository data
-    with open("data/ecr_repo.json", "w") as file:
+    with open("scripts/data/ecr_repo.json", "w") as file:
         file.write(json.dumps(repository, indent=4))
 
 

@@ -19,8 +19,8 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 WORKFLOW: str = "ecr"
 
 LAMBDA_NAME = "lambda-template"
-LAMBDA_RUNTIME = "python3.11"
-LAMBDA_HANDLER = "handler.app"
+# LAMBDA_RUNTIME = "python3.11"
+# LAMBDA_HANDLER = "handler.app"
 LAMBDA_TIMEOUT = 300  # 5min
 
 
@@ -59,15 +59,21 @@ def main():
         }
 
     if WORKFLOW == "ecr":
+        # when creating ecr with python scripts
+        # with open("scripts/data/ecr_repo.json", "r") as file:
+        #     uri = json.loads(file.read())["repositoryUri"]
+
+        with open("scripts/data/ecr_repo.txt", "r") as file:
+            uri = file.read()
+
         # use ECR docker image for building container for lambda function
-        uri = ""
         workflow_config = {"Code": {"ImageUri": uri}, "PackageType": "Image"}
 
     basic_config = {
         "FunctionName": LAMBDA_NAME,
-        "Runtime": LAMBDA_RUNTIME,
+        # "Runtime": LAMBDA_RUNTIME,
         "Role": role["Role"]["Arn"],
-        "Handler": LAMBDA_HANDLER,
+        # "Handler": LAMBDA_HANDLER,
         "Timeout": LAMBDA_TIMEOUT,  # Maximum allowable timeout
         # Set up Lambda function environment variables
         # "Environment": {
@@ -81,7 +87,7 @@ def main():
     response = lambda_client.create_function(**lambda_configuration)
     logger.info(f"Lambda creation response: {response}")
 
-    with open("data/lambda.json", "w") as file:
+    with open("scripts/data/lambda.json", "w") as file:
         file.write(json.dumps(response))
 
 
