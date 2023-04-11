@@ -25,6 +25,11 @@ source myenv/bin/activate
 # Install dependencies
 pip3 install -r requirements.txt
 
+# Useful for scripts configurations
+export AWS_ACCOUNT_ID="134284459147"
+export AWS_REGION_NAME="us-east-1"
+export PROJECT_NAME="github-to-lambda"
+
 ```
 
 4. Create ECR for new lambda project (note : update script variables according to project)
@@ -47,17 +52,16 @@ python3 scripts/create_lambdas.py
 python3 scripts/create_iam_lambda_execution.py
 ```
 
-7. Define github actions secrets within project repository:
+7. Define github actions variables within project repository:
+ - PROJECT_NAME
+
+8. Define github actions secrets within project repository:
   - AWS_ACCOUNT_ID
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
   - REGION_NAME
 
-8. Define image name (project name) within .github/workflows/deploy.yaml 
-
-9. Push for auto build and deploy
-
-10. Enjoy, anytime you push to main or experimental branches within github the lambda function will update accordingly
+9. Push to main or experimental branches within github, the lambda function will update accordingly
 
 
 ## aws cli
