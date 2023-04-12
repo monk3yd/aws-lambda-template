@@ -21,28 +21,29 @@ virtualenv -p ~/anaconda3/bin/python3.9 venv
 
 # This will activate the virtual environment and change your shell's prompt to indicate that you're using the new environment.
 source myenv/bin/activate 
+```
 
-# Install dependencies
+4. Install required dependencies
+```bash
 pip3 install -r requirements.txt
 
 # Useful for scripts configurations
 export AWS_ACCOUNT_ID="134284459147"
 export AWS_REGION_NAME="us-east-1"
 export PROJECT_NAME="github-to-lambda"
-
 ```
 
-4. Create ECR for new lambda project (note : update script variables according to project)
+5. Create ECR for new lambda project
 ```bash
 bash scripts/create-ecr-repo.sh
 ```
 
-5. Deploy init docker images (main/experimental) to ECR (note : update script variables according to project)
+6. Deploy init docker images (main/experimental) to ECR
 ```bash
 bash scripts/deploy-images-to-ecr.sh
 ```
 
-6. Create lambda functions (main/experimental) and link them to respective image within ECR. (note : update lambda name variable according to project)
+7. Create lambda functions (main/experimental) and link them to respective image within ECR
 ```bash
 python3 scripts/create_lambdas.py
 ```
@@ -52,14 +53,17 @@ python3 scripts/create_lambdas.py
 python3 scripts/create_iam_lambda_execution.py
 ```
 
-7. Define github actions secrets within project repository:
+8. Define github actions secrets within project repository:
   - AWS_ACCOUNT_ID
   - AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY
   - REGION_NAME
   - PROJECT_NAME
 
-8. Push to main or experimental branches within github, the lambda function will update accordingly
+9. Push to main or experimental branches within github, the lambda function will update accordingly
+
+## Steps for shared API Gateway configuration
+### TODO
 
 
 ## aws cli

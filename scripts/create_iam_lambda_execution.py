@@ -43,7 +43,7 @@ def main():
     logger.info(f"IAM create role response: {response}")
 
     # Save role data
-    with open("data/iam_role.json", "w") as file:
+    with open("scripts/data/iam_role.json", "w") as file:
         file.write(json.dumps(response))
 
 
