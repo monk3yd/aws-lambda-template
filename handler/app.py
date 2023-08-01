@@ -1,6 +1,8 @@
 import json
 import requests
 
+from loguru import logger
+
 
 def lambda_handler(event=dict(), context=dict()):
     # Cross Origin Resource Share (CORS) headers
@@ -11,7 +13,7 @@ def lambda_handler(event=dict(), context=dict()):
         "Content-Type": "application/json"
     }
 
-    # body = json.loads(event["body"])
+    logger.debug(f"Event: {event}")
 
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
@@ -37,8 +39,5 @@ def lambda_handler(event=dict(), context=dict()):
 #     "key1": "value1",
 #     "key2": "value2"
 # }
-# event = {
-#     "body": json.dumps(payload)
-# }
-# lambda_response = lambda_handler(event=event)
+# lambda_response = lambda_handler(event=json.dumps(payload))
 # print(f"Lambda response {type(lambda_response)}: {lambda_response}")
