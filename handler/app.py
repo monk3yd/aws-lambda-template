@@ -14,6 +14,8 @@ def lambda_handler(event=dict(), context=dict()):
     }
 
     logger.debug(f"Event: {event}")
+    variable_1 = event["key1"]
+    variable_2 = event["key2"]
 
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
