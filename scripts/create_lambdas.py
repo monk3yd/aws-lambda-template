@@ -5,6 +5,7 @@ import json
 import os
 
 from loguru import logger
+from utils import generate_role_name
 
 
 # ------------- AWS Settings ----------------
@@ -39,8 +40,9 @@ def main():
     iam_client = session.client("iam")
     lambda_client = session.client("lambda")
 
+    role_name = generate_role_name(PROJECT_NAME)
     # Import IAM role for basic lambda execution
-    role = iam_client.get_role(RoleName="LambdaBasicExecution")
+    role = iam_client.get_role(RoleName=f"LambdaBasicExecution{role_name}")
 
     if WORKFLOW == "local":
         # Upload directly zip code and dependencies
