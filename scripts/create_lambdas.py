@@ -75,7 +75,9 @@ def main():
         }
 
     if WORKFLOW == "ecr":
-        branches = ["main", "experimental"]
+        # TODO:
+        # branches = ["main", "experimental"]
+        branches = ["main"]
         for branch in branches:
             # Main lambda
             with open(f"scripts/data/ecr_repo_{branch}.txt", "r") as file:
