@@ -32,10 +32,10 @@ def lambda_handler(event=dict(), context=dict()):
     return {
         "statusCode": 200,
         "headers": CORS,
-        "body": json.dumps({
+        "body": {
             "message": "hello world",
             "location": ip.text.replace("\n", "")
-        }),
+        },
     }
 
 
