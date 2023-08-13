@@ -1,3 +1,5 @@
+# AWS Lambda Basic Template (invoke)
+
 import json
 import requests
 
@@ -14,16 +16,17 @@ CORS = {
 def lambda_handler(event=dict(), context=dict()):
     logger.debug(f"Event: {event}")
 
-    variable_1 = event["key1"]
-    variable_2 = event["key2"]
+    machine = event["machine"]
+    logger.debug(f"Machine name: {machine}")
 
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
     except requests.RequestException as error:
         # Send some context about this error to Lambda Logs
         logger.error(error)
-
         raise error
+    else:
+        logger.debug(f"My IP: {ip.text}")
 
     # 200OK lambda response
     return {
@@ -37,11 +40,14 @@ def lambda_handler(event=dict(), context=dict()):
 
 
 # --- Local ---
-# if __name__ == "__main__":
-#     payload = {
-#         "key1": "value1",
-#         "key2": "value2"
-#     }
-    # lambda_response = lambda_handler(event=json.dumps(payload))
-    # lambda_response = lambda_handler(event=payload)
-    # logger.info(f"Lambda response {type(lambda_response)}: {lambda_response}")
+# Run: python3 handler/app.py
+if __name__ == "__main__":
+    payload = {
+        "machine": "monk3yd",
+    }
+    lambda_response = lambda_handler(event=payload)
+    logger.info(f"Lambda response {type(lambda_response)}: {lambda_response}")
+
+# --- Serverless ---
+# Run: bash scripts/deploy-images-to-ecr.sh
+
