@@ -1,20 +1,19 @@
-FROM public.ecr.aws/docker/library/ubuntu:latest
-# FROM public.ecr.aws/ubuntu/ubuntu:22.04
+FROM public.ecr.aws/docker/library/ubuntu:22.04
 
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
     python3 \
-    python3-pip
+    python3-pip && \
+    apt-get clean
 
 ARG FUNCTION_DIR="/home/app/"
-
 RUN mkdir -p ${FUNCTION_DIR}
 
 COPY requirements.txt ${FUNCTION_DIR}
-RUN pip3 install -r ${FUNCTION_DIR}/requirements.txt
+RUN pip3 install --no-cache-dir -r ${FUNCTION_DIR}/requirements.txt
 
 # Copy function code
-COPY ./handler/app.py ${FUNCTION_DIR}
+COPY ./handler/* ${FUNCTION_DIR}
 
 # Install Lambda Runtime Interface Client for Python
 RUN python3 -m pip install awslambdaric --target ${FUNCTION_DIR}
