@@ -4,7 +4,7 @@
 # https://docs.aws.amazon.com/lambda/latest/dg/python-image.html#python-image-instructions
 
 # Define custom function directory
-ARG FUNCTION_DIR="/function/"
+ARG FUNCTION_DIR="/monk3yd/"
 
 FROM python:3.11 as build-image
 
@@ -22,7 +22,7 @@ RUN chown -R monk3yd:monk3yd ${FUNCTION_DIR}
 USER monk3yd
 
 # Copy function code
-COPY ./handler/app.py ${FUNCTION_DIR}
+COPY ./handler/* ${FUNCTION_DIR}
 
 # Install the function's dependencies
 RUN pip install \

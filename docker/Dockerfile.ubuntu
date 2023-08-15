@@ -7,17 +7,17 @@ RUN apt-get update && \
     python3-pip && \
     apt-get clean
 
-ARG FUNCTION_DIR="/home/app/"
+ARG FUNCTION_DIR="/monk3yd/"
 RUN mkdir -p ${FUNCTION_DIR}
 
 # create a dedicated group and user
-RUN groupadd -r monk3yd && useradd -g monk3yd monk3yd
+# RUN groupadd -r monk3yd && useradd -g monk3yd monk3yd
 
 # set ownership and permissions
-RUN chown -R monk3yd:monk3yd ${FUNCTION_DIR}
+# RUN chown -R monk3yd:monk3yd ${FUNCTION_DIR}
 
 # change to non-root user (some images already have a generic user)
-USER monk3yd
+# USER monk3yd
 
 # Set environment variables
 ENV KEY=RFTL
@@ -39,4 +39,4 @@ COPY docker/entrypoint.sh /
 RUN chmod 755 /usr/bin/aws-lambda-rie /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "app.lambda_handler" ]
+CMD [ "main.lambda_handler" ]
