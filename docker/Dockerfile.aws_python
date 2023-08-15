@@ -3,13 +3,16 @@
 FROM public.ecr.aws/lambda/python:3.11
 
 # create a dedicated group and user
-run groupadd -r monk3yd && useradd -g monk3yd monk3yd
+RUN groupadd -r monk3yd && useradd -g monk3yd monk3yd
 
 # set ownership and permissions
-run chown -r monk3yd:monk3yd ${function_dir}
+RUN chown -R monk3yd:monk3yd ${LAMBDA_TASK_ROOT}
 
 # change to non-root user (some images already have a generic user)
-user monk3yd
+USER monk3yd
+
+# Set environment variables
+ENV KEY=RFTL
 
 # Copy function code
 COPY ./handler/app.py ${LAMBDA_TASK_ROOT}

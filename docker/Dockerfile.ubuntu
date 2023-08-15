@@ -11,13 +11,16 @@ ARG FUNCTION_DIR="/home/app/"
 RUN mkdir -p ${FUNCTION_DIR}
 
 # create a dedicated group and user
-run groupadd -r monk3yd && useradd -g monk3yd monk3yd
+RUN groupadd -r monk3yd && useradd -g monk3yd monk3yd
 
 # set ownership and permissions
-run chown -r monk3yd:monk3yd ${function_dir}
+RUN chown -R monk3yd:monk3yd ${FUNCTION_DIR}
 
 # change to non-root user (some images already have a generic user)
-user monk3yd
+USER monk3yd
+
+# Set environment variables
+ENV KEY=RFTL
 
 COPY requirements.txt ${FUNCTION_DIR}
 RUN pip3 install --no-cache-dir -r ${FUNCTION_DIR}/requirements.txt
