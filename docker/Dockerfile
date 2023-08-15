@@ -49,4 +49,4 @@ RUN pip install -r ${FUNCTION_DIR}/requirements.txt
 ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
 
 # Pass the name of the function handler as an argument to the runtime
-CMD [ "app.lambda_handler" ]
+CMD [ "main.lambda_handler" ]
