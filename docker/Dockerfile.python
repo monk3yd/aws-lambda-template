@@ -1,3 +1,5 @@
+# Python Docker Image
+
 # Using an alternative base image (python) with the runtime interface client (awslambdaric)
 # https://docs.aws.amazon.com/lambda/latest/dg/python-image.html#python-image-instructions
 
@@ -9,6 +11,15 @@ FROM python:3.11 as build-image
 # Include global arg in this stage of the build
 ARG FUNCTION_DIR
 RUN mkdir -p ${FUNCTION_DIR}
+
+# create a dedicated group and user
+run groupadd -r monk3yd && useradd -g monk3yd monk3yd
+
+# set ownership and permissions
+run chown -r monk3yd:monk3yd ${function_dir}
+
+# change to non-root user (some images already have a generic user)
+user monk3yd
 
 # Copy function code
 COPY ./handler/app.py ${FUNCTION_DIR}

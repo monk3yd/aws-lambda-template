@@ -1,11 +1,21 @@
-# Using an AWS base image for Python
+# AWS Docker Image for Python
+
 FROM public.ecr.aws/lambda/python:3.11
 
-# Copy requirements.txt
-COPY requirements.txt ${LAMBDA_TASK_ROOT}
+# create a dedicated group and user
+run groupadd -r monk3yd && useradd -g monk3yd monk3yd
+
+# set ownership and permissions
+run chown -r monk3yd:monk3yd ${function_dir}
+
+# change to non-root user (some images already have a generic user)
+user monk3yd
 
 # Copy function code
 COPY ./handler/app.py ${LAMBDA_TASK_ROOT}
+
+# Copy requirements.txt
+COPY requirements.txt ${LAMBDA_TASK_ROOT}
 
 # Install the specified packages
 RUN pip install -r requirements.txt
