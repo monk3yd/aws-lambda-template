@@ -1,6 +1,7 @@
 # AWS Lambda Basic Template (invoke)
 
-import json
+import os
+# import json
 import requests
 
 from loguru import logger
@@ -16,8 +17,13 @@ CORS = {
 def lambda_handler(event=dict(), context=dict()):
     logger.debug(f"Event: {event}")
 
+    # Access input value
     machine = event["machine"]
     logger.debug(f"Machine name: {machine}")
+
+    # Access environment value (Dockerfile)
+    key = os.getenv("KEY")
+    logger.debug(f"Key: {key}")
 
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
