@@ -7,7 +7,7 @@ RUN apt-get update && \
     python3-pip && \
     apt-get clean
 
-ARG FUNCTION_DIR="/monk3yd/"
+ARG FUNCTION_DIR="/home/monk3yd/"
 RUN mkdir -p ${FUNCTION_DIR}
 
 # create a dedicated group and user

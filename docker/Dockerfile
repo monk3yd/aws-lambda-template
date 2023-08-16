@@ -4,7 +4,7 @@
 # https://docs.aws.amazon.com/lambda/latest/dg/python-image.html#python-image-instructions
 
 # Define custom function directory
-ARG FUNCTION_DIR="/monk3yd/"
+ARG FUNCTION_DIR="/home/monk3yd/"
 
 FROM python:3.11 as build-image
 
