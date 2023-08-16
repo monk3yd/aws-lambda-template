@@ -24,11 +24,6 @@ USER monk3yd
 # Copy function code
 COPY ./handler/* ${FUNCTION_DIR}
 
-# Install the function's dependencies
-RUN pip install \
-    --target ${FUNCTION_DIR} \
-        awslambdaric
-
 # Use a slim version of the base Python image to reduce the final image size
 FROM python:3.11-slim
 
@@ -45,8 +40,14 @@ COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
 COPY requirements.txt ${FUNCTION_DIR}
 RUN pip install -r ${FUNCTION_DIR}/requirements.txt
 
-# Set runtime interface client as default command for the container runtime
-ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
+# Install Lambda Runtime Interface Client for Python
+RUN python -m pip install awslambdaric --target ${FUNCTION_DIR}
+
+# (Optional) Add Lambda Runtime Interface Emulator and use a script in the ENTRYPOINT for simpler local runs
+ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/bin/aws-lambda-rie
+COPY docker/entrypoint.sh /
+RUN chmod 755 /usr/bin/aws-lambda-rie /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 # Pass the name of the function handler as an argument to the runtime
 CMD [ "main.lambda_handler" ]
