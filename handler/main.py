@@ -14,7 +14,7 @@ CORS = {
     "Content-Type": "application/json"
 }
 
-def lambda_handler(event=dict(), context=dict()):
+def handler(event=dict(), context=dict()):
     logger.debug(f"Event: {event}")
 
     # Access input value

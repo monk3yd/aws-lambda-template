@@ -50,4 +50,4 @@ RUN chmod 755 /usr/bin/aws-lambda-rie /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 # Pass the name of the function handler as an argument to the runtime
-CMD [ "main.lambda_handler" ]
+CMD [ "main.handler" ]

@@ -39,4 +39,4 @@ COPY docker/entrypoint.sh /
 RUN chmod 755 /usr/bin/aws-lambda-rie /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-CMD [ "main.lambda_handler" ]
+CMD [ "main.handler" ]
